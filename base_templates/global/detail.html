@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes de {{ usuario.first_name }}</title>
+    <link rel="stylesheet" href="{% static 'global/details.css' %}">
+    <link rel="icon" href="{% static 'Favicon/favicon.ico' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+
+</head>
+<body>
+    <div class="header">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'authentication' %}" class="auth-link">
+                <i class="fas fa-user">
+                </i>
+            </a>
+    
+        {% else %}
+                <a href="{% url 'edit_profile' %}" class="edit-link">
+                    <img src="{% static 'icons/editar.png' %}" class="edit-image">
+                </a>
+    
+        {% endif %}
+    
+            <a href="{% url 'home' %}" class="title-link">
+                <p class="title">Recruta-me</p>
+            </a>
+            <div class="search-box">
+                <form class="search-form" method="GET" action="{% url 'search_profiles' %}">
+                    <input type="text" class="search-input" placeholder="Pesquise Nome ou Cargo..." name="search" value="{{ search_profiles }}" required>
+                    <button type="submit" class="search-button" id="open-search-box">&#128269;</button>
+                    </div>
+                </form>
+    
+                <div class="form-media" id="toggle-form-media">
+                    <span class="search-icon">
+                        &#128269;
+                    </span>
+                </div>
+                <form class="search-form-media" method="GET" action="{% url 'search_profiles' %}">
+                    <input type="text" class="search-input-media" placeholder="Pesquise Nome ou Cargo..." name="search" value="{{ search_profiles }}" required>
+                    <button type="submit" class="search-button-media" id="open-search-box">&#128269;</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <div class="content">
+        {% if usuario.photo %} 
+            <img src="{{ usuario.photo.url }}" alt="Foto do usuário" class="photo"> 
+        {% else %} 
+            <img src="/media/Files/Sem foto.png" alt="Usuário sem foto" class="photo">
+        {% endif %}
+        <div class="contact">
+            <p class="contact-title">
+                Informações Pessoais
+            </p>
+            <div class="contact-columns">
+                <div class="contact-column">
+                    {% if usuario.first_name %}
+                        <p class="name">
+                            Nome: {{ usuario.first_name }}
+                        </p>
+                    {% else %}
+                        <p class="name">
+                            Nome: Não Informado
+                        </p>
+                    {% endif %}
+                    
+                    {% if usuario.age %}
+                        <p class="age">
+                            Idade: {{ usuario.age }}
+                        </p>
+                    {% else %}
+                        <p class="age">
+                            Idade: Não Informado
+                        </p>
+                    {% endif %}
+
+                    {% if usuario.cargo %}
+                        <p class="cargo">
+                            Cargo: {{ usuario.cargo }}
+                        </p>
+                    {% else %}
+                        <p class="cargo">
+                            Cargo: Não Informado
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="contact-column">
+                    {% if usuario.last_name %}
+                        <p class="last_name">
+                            Sobrenome: {{ usuario.last_name }}
+                        </p>
+                    {% else %}
+                        <p class="last_name">
+                            Sobrenome: Não Informado
+                        </p>
+                    {% endif %}
+
+                    {% if usuario.email %}
+                        <p class="email">
+                        Email: {{ usuario.email }}
+                        </p>
+                    {% else %}
+                        <p class="email">
+                            Email: Não Informado
+                        </p>
+                    {% endif %}
+
+                    {% if usuario.phone %}
+                        <p class="phone">
+                            Telefone: {{ usuario.phone }}
+                        </p>
+                    {% else %}
+                        <p class="phone">
+                            Telefone: Não Informado
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info">
+        {% if usuario.description %}
+            <p class="description">{{ usuario.description }}</p>
+        {% else %}
+            <p class="description"> Não Informado </p>
+        {% endif %}
+    </div>
+
+
+    <script>
+        const toggleFormMedia = document.querySelector("#toggle-form-media");
+    
+        toggleFormMedia.addEventListener("click", (event) => {
+            event.stopPropagation(); // Impede que o clique se propague para o documento
+            const searchFormMedia = document.querySelector(".search-form-media");
+            const searchInputMedia = document.querySelector(".search-input-media");
+    
+            if (searchFormMedia && searchInputMedia) {
+                searchFormMedia.style.display = "block";
+                searchInputMedia.focus();
+                toggleFormMedia.style.display = "none";
+            }
+        });
+    
+        document.addEventListener("click", (event) => {
+            const searchFormMedia = document.querySelector(".search-form-media");
+            const searchInputMedia = document.querySelector(".search-input-media");
+            const toggleFormMedia = document.querySelector("#toggle-form-media");
+    
+            // Verifique se o clique foi fora da search-form-media e se a search-input-media não tem foco
+            if (!searchFormMedia.contains(event.target) && event.target !== searchInputMedia) {
+                searchFormMedia.style.display = "none";
+                toggleFormMedia.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

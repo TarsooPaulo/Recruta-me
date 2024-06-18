@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticação</title>
+    <link rel="stylesheet" href="{% static 'global/authentication.css' %}">
+    <link rel="icon" href="{% static 'Favicon/favicon.ico' %}">
+    
+
+</head>
+<body>
+    <div class="header">
+        <a href="{{ request.session.previous_url }}" class="previous-page">
+            <p class="previous-icon">&lt;</p>
+        </a>
+
+        <a href="{% url 'home' %}" class="title-link">
+            <p class="title">Recruta-me</p>
+        </a>
+    </div>
+
+    <div class="body-container">
+        <div class="auth-container">
+            <p class="login">Login</p>
+
+            <form class="login-form" method="POST" action="{% url 'authentication' %}">
+                {% csrf_token %}
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.username.errors }}
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {{ form.password.errors }}
+                <div class="button-container">
+                    <button type="submit" class="button">Entrar</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="no-account">
+            <p class="no-account-text">Não possui uma conta?</p>
+            <a class="register-button" href="{% url 'register' %}">
+                <p class="register-text">Criar Nova Conta</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

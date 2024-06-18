@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+    <link rel="stylesheet" href="{% static 'global/results.css' %}">
+    <link rel="icon" href="{% static 'Favicon/favicon.ico' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  
+</head>
+<body>
+    <div class="header">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'authentication' %}" class="auth-link">
+                <i class="fas fa-user">
+                </i>
+            </a>
+    
+        {% else %}
+                <a href="{% url 'edit_profile' %}" class="edit-link">
+                    <img src="{% static 'icons/editar.png' %}" class="edit-image">
+                </a>
+    
+        {% endif %}
+    
+            <a href="{% url 'home' %}" class="title-link">
+                <p class="title">Recruta-me</p>
+            </a>
+            <div class="search-box">
+                <form class="search-form" method="GET" action="{% url 'search_profiles' %}">
+                    <input type="text" class="search-input" placeholder="Pesquise Nome ou Cargo..." name="search" value="{{ search_profiles }}" required>
+                    <button type="submit" class="search-button" id="open-search-box">&#128269;</button>
+                    </div>
+                </form>
+    
+                <div class="form-media" id="toggle-form-media">
+                    <span class="search-icon">
+                        &#128269;
+                    </span>
+                </div>
+                <form class="search-form-media" method="GET" action="{% url 'search_profiles' %}">
+                    <input type="text" class="search-input-media" placeholder="Pesquise Nome ou Cargo..." name="search" value="{{ search_profiles }}" required>
+                    <button type="submit" class="search-button-media" id="open-search-box">&#128269;</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <h2 class="profiles-title">Resultados da Pesquisa</h2>
+    <div class="profiles">
+        {% if usuarios %}
+            {% for usuario in usuarios|slice:":6" %}
+                <a href="{% url 'detail' id=usuario.id %}" class="profile">
+                    <div>
+                        {% if usuario.photo %}
+                            {% if usuario.photo.url %}
+                                <img src="{{ usuario.photo.url }}" alt="Foto do usuário" class="photo">
+                            {% else %}
+                                <img src="{% static 'Files/Sem foto.png' %}" alt="Usuário sem foto" class="non-photo">
+                            {% endif %}
+                        {% else %}
+                            <img src="{% static 'Files/Sem foto.png' %}" alt="Usuário sem foto" class="photo">
+                        {% endif %}
+                    </div>
+                    <div class="details">
+                        <p class="cargo">Cargo: {{ usuario.cargo|capfirst }}</p>
+                        <p class="name">Nome: {{ usuario.first_name|capfirst }}</p>
+                    </div>
+                    <div>
+                        <p class="description">Descrição: {{ usuario.description|slice:":255" }}...</p>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p class="no-profiles">Nenhum resultado encontrado para: "{{ search_profiles }}"</p>
+        {% endif %}
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1{% if search_profiles %}&search={{ search_profiles }}{% endif %}" class="link-pag-first">
+                <p class="pagination-icon-firts">&laquo;</p>
+            </a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if search_profiles %}&search={{ search_profiles }}{% endif %}" class="link-pag-prev">
+                <p class="pagination-icon-prev">&lt;</p>
+            </a>
+            {% endif %}
+    
+            <span class="current-page">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
+    
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search_profiles %}&search={{ search_profiles }}{% endif %}" class="link-pag-next">
+                <p class="pagination-icon-next">&gt;</p>
+            </a>    
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if search_profiles %}&search={{ search_profiles }}{% endif %}" class="link-pag-last"> 
+                <p class="pagination-icon-last">&raquo;</p>
+            </a>
+            {% endif %}
+        </span>
+    </div>
+
+    <script>
+        const toggleFormMedia = document.querySelector("#toggle-form-media");
+
+        toggleFormMedia.addEventListener("click", (event) => {
+            event.stopPropagation(); // Impede que o clique se propague para o documento
+            const searchFormMedia = document.querySelector(".search-form-media");
+            const searchInputMedia = document.querySelector(".search-input-media");
+
+            if (searchFormMedia && searchInputMedia) {
+                searchFormMedia.style.display = "block";
+                searchInputMedia.focus();
+                toggleFormMedia.style.display = "none";
+            }
+        });
+
+        document.addEventListener("click", (event) => {
+            const searchFormMedia = document.querySelector(".search-form-media");
+            const searchInputMedia = document.querySelector(".search-input-media");
+            const toggleFormMedia = document.querySelector("#toggle-form-media");
+
+            // Verifique se o clique foi fora da search-form-media e se a search-input-media não tem foco
+            if (!searchFormMedia.contains(event.target) && event.target !== searchInputMedia) {
+                searchFormMedia.style.display = "none";
+                toggleFormMedia.style.display = "block";
+            }
+        });
+
+        // Função para destacar texto mantendo a capitalização original
+        function highlightTextWithCase(searchTerm, text) {
+            const regex = new RegExp(searchTerm, 'gi'); // 'gi' para pesquisa global e insensível a maiúsculas e minúsculas
+            return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
+        }
+
+        // Função para destacar texto em todos os perfis
+        function highlightTextInProfiles(searchTerm) {
+            // Destaque o texto de pesquisa nos resultados
+            const profiles = document.querySelectorAll('.profile');
+            profiles.forEach((profile) => {
+                const nameElement = profile.querySelector('.name');
+                const cargoElement = profile.querySelector('.cargo');
+                const descriptionElement = profile.querySelector('.description');
+
+                if (nameElement) {
+                    const originalName = nameElement.textContent;
+                    const highlightedName = highlightTextWithCase(searchTerm, originalName);
+                    nameElement.innerHTML = highlightedName;
+                }
+
+                if (cargoElement) {
+                    const originalCargo = cargoElement.textContent;
+                    const highlightedCargo = highlightTextWithCase(searchTerm, originalCargo);
+                    cargoElement.innerHTML = highlightedCargo;
+                }
+
+                if (descriptionElement) {
+                    const originalDescription = descriptionElement.textContent;
+                    const highlightedDescription = highlightTextWithCase(searchTerm, originalDescription);
+                    descriptionElement.innerHTML = highlightedDescription;
+                }
+            });
+        }
+
+        // Função para destacar texto quando a página é carregada ou a história de navegação é alterada
+        function highlightTextOnPageLoad() {
+            // Recupere o termo de pesquisa da query string
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchTerm = urlParams.get('search');
+
+            if (searchTerm) {
+                // Destaque o texto nos perfis
+                highlightTextInProfiles(searchTerm);
+            }
+        }
+
+        // Adicione um ouvinte de evento para destacar o texto quando a página é carregada
+        document.addEventListener('DOMContentLoaded', highlightTextOnPageLoad);
+
+        // Adicione um ouvinte de evento para destacar o texto quando a história de navegação é alterada (navegação para a próxima página)
+        window.addEventListener('popstate', highlightTextOnPageLoad);
+
+        // Chame a função para destacar o texto ao carregar a página inicial
+        highlightTextOnPageLoad();
+    </script>
+</body>
+</html>

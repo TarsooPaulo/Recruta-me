@@ -1,0 +1,392 @@
+/* cabeçalho */
+@import url('https://fonts.googleapis.com/css2?family=Delicious+Handrawn&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+*::selection{
+  background-color: cyan;
+  color: #000080;
+}
+
+.header {
+  position: relative;
+  background: #000080;
+  height: 4rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.previous-page{
+  font-size: 4rem;
+  position: absolute;
+  height: 75%;
+  background-color: white;
+  width: 7rem;
+  left: 2%;
+  border-radius: 5px;
+  top: 4px;
+  overflow: hidden;
+}
+
+.previous-page:hover{
+  background: cyan;
+  transition: all 0.25s ease-in-out;
+}
+
+.previous-icon{
+  color: #000080;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  text-decoration: none;
+  font-weight: bolder;
+  font-size: 3.5rem;
+}
+
+.title {
+  display: inline;
+  font-size: 3.5rem;
+  font-family: 'Delicious Handrawn', cursive;
+  color: white;
+}
+
+.title:hover {
+  transition: all 0.25s ease-in-out;
+  color: cyan;
+}
+
+.content {
+  font-size: 3rem;
+}
+
+.title-link {
+  display: inline;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-decoration: none;
+  padding-bottom: 0.3rem;
+}
+
+.search-box {
+  position: absolute;
+  top: 50%;
+  right: 2rem;
+  transform: translate(0, -50%);
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.search-input {
+  padding: 0.5rem;
+  font-size: 1.6rem;
+  border: 1px solid #888888;
+  border-radius: 5px 0 0 5px;
+}
+
+.search-button {
+  padding: 0.5rem;
+  background-color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.search-button:hover{
+  background: cyan;
+  transition: all 0.25s ease-in-out;
+}
+
+.search-form-media{
+  display: none;
+}
+
+.search-icon{
+  display: none;
+}
+
+/* cabeçalho 
+____________________________________________________
+
+Apresentação/ Gif / Botões*/
+.header::after{
+  display: block;
+  content: ".";
+  background-color: cyan;
+  min-width: 100%;
+  height: 3px;
+  position: absolute;
+  top: 100%;
+  transform: translateY(-100%);
+  overflow: hidden;
+}
+
+.auth-container {
+  background: #000080;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10rem auto auto auto;
+  min-width: 320px;
+  max-width: 450px;
+  max-height: auto;
+  min-height: auto;
+}
+
+
+.login{
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+  font-size: 3rem;
+  font-weight: bolder;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+
+.user-password {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Centralize o texto */
+}
+
+.input-container {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centralize horizontalmente */
+  text-align: center; /* Centralize o texto */
+}
+
+
+.user-password label {
+  font-size: 2rem;
+  width: 100%; /* Use a largura total disponível */
+}
+.user-password input[type="text"],
+.user-password input[type="password"] {
+  width: 100%; /* Use a largura total disponível */
+  max-width: 200px; /* Defina uma largura máxima para evitar que os campos fiquem muito largos */
+  padding: 0.5rem;
+  font-size: 1.6rem;
+  border: 1px solid #888888;
+  border-radius: 5px;
+}
+
+.button-container{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.button{
+  padding: 0.5rem 1rem;
+  background-color: cyan;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  margin: 1rem;
+}
+
+.help-text {
+  font-size: 1.5rem;
+  margin-top: 5px;
+}
+
+.username-errors{
+  color: cyan;
+  font-size: 4rem;
+}
+
+.confirm_password.errors{
+  color: cyan;
+  font-size: 4rem;
+}
+
+.errors{
+  color: cyan;
+  font-size: 4rem;
+  align-content: center;
+}
+
+.button-container{
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .search-box {
+    right: 1rem; /* Ajuste a distância da direita conforme necessário */
+  }
+
+  .search-input{
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 775px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-group {
+    margin-right: 0; /* Remova a margem direita para que os campos ocupem toda a largura */
+  }
+}
+
+@media (max-width: 520px){
+  .form-bg{
+    margin: 0;
+  }
+
+  .form{
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-title{
+    min-width: 0;
+    font-size: 4em;
+    margin: 2rem 0 0 0;
+  }
+
+  .authenticate{
+    font-size: 2.8rem;
+  }
+
+  .auth-link-form{
+    font-size: 2rem;
+  }
+
+  .submit-button{
+    margin-top: 1rem;
+  }
+
+  .footer{
+    font-size: 1.9rem;
+  }
+}
+
+@media (max-width: 500px) {
+  /* Ocultar o campo de entrada de pesquisa */
+  .search-box {
+    display: none;
+  }
+
+  .form-media{
+    font-size: 3.5rem;
+    position: absolute;
+    height: 75%;
+    background-color: white;
+    width: 7rem;
+    right: 2%;
+    border-radius: 5px;
+    top: 4px;
+    cursor: pointer;
+  }
+
+  .search-icon{
+    display: block;
+    color: #000080;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .search-button-media:hover{
+    background-color: cyan;
+
+  }
+
+  .search-form-media {
+    display: none; /* Inicialmente oculto */
+    position: absolute; /* Define a posição como absoluta */
+    height: 100%;
+    min-width: 100%;
+    z-index: 9999;
+    padding: 5px;
+    overflow: hidden;
+    font-size: 1.5rem;
+}
+
+  .search-input-media{
+    min-height: 100%;
+    min-width: 100%;
+  }
+
+  .search-button-media{
+    font-size: 2rem;
+    position: absolute;
+    height: 75%;
+    background-color: white;
+    width: 7rem;
+    right: 2%;
+    border-radius: 5px;
+    top: 4px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+}
+
+@media (max-width: 468px){
+  .logoff-link{
+    display: none;
+  }
+
+  .menu-image{
+    max-width: 100%;
+    max-height: 100%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+  }
+
+
+
+  .menu-container{
+    display: flex;
+    justify-content: center;
+    font-size: 4rem;
+    position: absolute;
+    height: 75%;
+    background-color: white;
+    width: 7rem;
+    left: 2%;
+    border-radius: 5px;
+    top: 4px;
+  }
+
+}
+
+@media (max-width: 350px){
+  .auth-container{
+    margin: 3rem 0 0 0;
+  }
+}

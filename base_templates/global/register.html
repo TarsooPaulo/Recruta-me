@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registre-se</title>
+    <link rel="stylesheet" href="{% static 'global/register.css' %}">
+    <link rel="icon" href="{% static 'Favicon/favicon.ico' %}">
+
+</head>
+<body>
+    <div class="header">
+        <a href="{{ request.session.previous_url }}" class="previous-page">
+            <p class="previous-icon">&lt;</p>
+        </a>
+
+        <a href="{% url 'home' %}" class="title-link">
+            <p class="title">Recruta-me</p>
+        </a>
+    </div>
+
+    <div class="auth-container">
+        <p class="login">Registre-se</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="user-password">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <div class="username-errors">
+                    {{ form.username.errors }}
+                </div>
+            </div>
+            <div class="user-password">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <span class="help-text">Mínimo 8 Caracteres.</span>
+                <div class="password-errors">
+                    {{ form.password.errors }}
+                </div>
+            </div>
+            <div class="user-password">
+                {{ form.confirm_password.label_tag }}
+                {{ form.confirm_password }}
+                <div class="confirm_password.errors">
+                    {{ form.confirm_password.errors }}
+                </div>
+            </div>
+        {% for error in form.non_field_errors %}
+        <div class="errors">
+            <ul>
+                <li>
+                    {{ error }}
+                </li>
+            </ul>
+        </div>
+        {% endfor %}
+        <div class="button-container">
+            <button type="submit" class="button">Criar conta</button>
+        </div>
+        </form>
+    </div>
+
+    <script>
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm-password").value;
+            if (password != confirmPassword) {
+                alert("As senhas não coincidem. Por favor, verifique novamente.");
+                return false;
+            }
+            console.log("validatePassword() foi chamada com sucesso.");
+            return true;
+        }
+
+        const candidatesButton = document.querySelector(".candidates"); 
+        const recruitersButton = document.querySelector(".recruiters"); 
+        const messageOverlay = document.querySelector(".message-overlay"); 
+        const messageText = document.querySelector(".message-text"); 
+        const closeButton = document.querySelector(".close-button"); 
+        const messageBox = document.querySelector('.message-box'); 
+        messageBox.classList.add('show');
+        const redirectButton = document.querySelector(".redirect-button");
+    
+        candidatesButton.addEventListener("click", () => { 
+            const candidatesDiv = document.querySelector(".candidates"); 
+            candidatesDiv.style.backgroundColor = "white"; 
+            messageText.textContent = "Dê o Salto para a Sua Carreira dos Sonhos! Esteja Sempre ao Alcance dos Olhos dos Recrutadores. Suas Habilidades em Destaque e Suas Conquistas ao Alcance de Grandes Oportunidades de Emprego. Deixe o Seu Futuro Brilhar!"; 
+            messageOverlay.style.display = "flex"; 
+        }); 
+    
+        candidatesButton.addEventListener("mouseover", () => { 
+            const candidatesDiv = document.querySelector(".candidates"); 
+            candidatesDiv.style.backgroundColor = "cyan"; 
+        }); 
+    
+        candidatesButton.addEventListener("mouseout", () => { 
+            const candidatesDiv = document.querySelector(".candidates"); 
+            candidatesDiv.style.backgroundColor = "white"; 
+        }); 
+    
+        recruitersButton.addEventListener("click", () => { 
+            const recruitersDiv = document.querySelector(".recruiters"); 
+            recruitersDiv.style.backgroundColor = "white"; 
+            messageText.textContent = "Explore um Mundo de Talentos! Encontre a Jóia Perfeita para a Sua Empresa. Navegue por Perfis Diversificados em Todas as Profissões e Encontre o Parceiro Ideal para Impulsionar o Seu Negócio!"; 
+            messageOverlay.style.display = "flex"; 
+        }); 
+    
+        recruitersButton.addEventListener("mouseover", () => { 
+            const recruitersDiv = document.querySelector(".recruiters"); 
+            recruitersDiv.style.backgroundColor = "cyan"; 
+        }); 
+    
+        recruitersButton.addEventListener("mouseout", () => { 
+            const recruitersDiv = document.querySelector(".recruiters"); 
+            recruitersDiv.style.backgroundColor = "white"; 
+        }); 
+    
+        closeButton.addEventListener("click", () => { 
+            messageOverlay.style.display = "none"; 
+        });
+    
+        redirectButton.addEventListener("click", () => {
+            const profilesSection = document.querySelector(".profiles-title");
+            profilesSection.scrollIntoView({ behavior: "smooth" });
+            messageOverlay.style.display = "none";
+        });
+    
+        const toggleFormMedia = document.querySelector("#toggle-form-media");
+    toggleFormMedia.addEventListener("click", (event) => {
+        event.stopPropagation(); // Impede que o clique se propague para o documento
+        const searchFormMedia = document.querySelector(".search-form-media");
+        const searchInputMedia = document.querySelector(".search-input-media");
+        searchFormMedia.style.display = "block";
+        searchInputMedia.focus();
+        toggleFormMedia.style.display = "none";
+    });
+
+    // Event listener para detectar cliques fora da div search-form-media
+    document.addEventListener("click", (event) => {
+        const searchFormMedia = document.querySelector(".search-form-media");
+        const searchInputMedia = document.querySelector(".search-input-media");
+        const toggleFormMedia = document.querySelector("#toggle-form-media");
+
+        // Verifique se o clique foi fora da search-form-media e se a search-input-media não tem foco
+        if (!searchFormMedia.contains(event.target) && event.target !== searchInputMedia) {
+            searchFormMedia.style.display = "none";
+            toggleFormMedia.style.display = "block";
+        }
+    });
+    </script>
+</body>
+</html>

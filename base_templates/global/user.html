@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+{% load custom_tags %}
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=p, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'global/user.css' %}">
+    <link rel="icon" href="{% static 'Favicon/favicon.ico' %}">
+    <title>Perfil de {{ user.username }}</title>
+</head>
+<body>
+    <div class="header">
+        <a href="{% url 'logoff' %}" class="logoff-link">
+            <img src="{% static 'icons/sair.png' %}" class="logoff-image">
+        </a>
+
+        <a href="{% url 'home' %}" class="title-link">
+            <p class="title">Recruta-me</p>
+        </a>
+    </div>
+
+    <div class="user-profile">
+        <div class="welcome">
+            <div>
+                {% if not user_profile.photo %}
+                    <img src="/media/Files/Sem foto.png" alt="Usuário sem foto" class="non-photo">
+                {% else %}
+                    <img src="{{ user_profile.photo.url }}" alt="Foto do usuário" class="photo"> 
+                {% endif %}
+            </div>
+            
+            <p class="welcome-text">Bem-Vindo(a), {{ user.username }}!</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'edit_profile' %}" class="edit-profile">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                {{ profile_form.first_name.label_tag }}
+                {{ profile_form.first_name }}
+                {{ profile_form.first_name.errors}}
+            </div>
+            <div class="form-group">
+                {{ profile_form.last_name.label_tag }}
+                {{ profile_form.last_name }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.cargo.label_tag }}
+                {{ profile_form.cargo }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.age.label_tag }}
+                {{ profile_form.age }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.email.label_tag }}
+                {{ profile_form.email }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.phone.label_tag }}
+                {{ profile_form.phone }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.description.label_tag }}
+                {{ profile_form.description }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.photo.label_tag }}
+                {{ profile_form.photo }}
+            </div>
+            <div class="button-container">
+                <button type="submit" class="button">Editar perfil</button>
+            </div>
+        </form>
+        
+        <form method="POST" action="{% url 'delete_account' %}" class="delete-form">
+            {% csrf_token %}
+            <div class="delete-container">
+                <p class="delete-text">Deseja excluir sua conta e seus dados?</p> <p class="delete-alert">é uma ação irreversivel!</p>
+            </div>
+                <div class="button-container-2">
+                <button type="submit" class="delete-button">Excluir conta</button>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+</html>
