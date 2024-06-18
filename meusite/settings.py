@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-z@(u47afdiz_sgr2*v-(n5odhbtj%wp4zr+qnd%h)pu-6^&h70
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["recruta-me.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
